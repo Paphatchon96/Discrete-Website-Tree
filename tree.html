@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ถึงไว — ต้นไม้เส้นทาง</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">ถ</div>
+      <div class="brand-text">ถึงไว<span>Smart Transit Planner</span></div>
+    </div>
+    <a class="nav-step" href="index.html">
+      <svg class="num" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border-radius:999px;padding:5px;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <div><div class="label">ค้นหาเส้นทาง</div><div class="sub">เลือกต้นทาง-ปลายทาง</div></div>
+    </a>
+    <a class="nav-step" href="compare.html">
+      <svg class="num" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border-radius:999px;padding:5px;"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+      <div><div class="label">เลือกเส้นทาง</div><div class="sub">เปรียบเทียบตัวเลือก</div></div>
+    </a>
+    <a class="nav-step" href="detail.html">
+      <svg class="num" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border-radius:999px;padding:5px;"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2"/></svg>
+      <div><div class="label">รายละเอียดการเดินทาง</div><div class="sub">ดูขั้นตอนทั้งหมด</div></div>
+    </a>
+    <a class="nav-step" href="ticket.html">
+      <svg class="num" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border-radius:999px;padding:5px;"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8z"/></svg>
+      <div><div class="label">ตั๋วเดินทาง</div><div class="sub">สรุปและชำระเงิน</div></div>
+    </a>
+    <a class="nav-step active" href="tree.html">
+      <svg class="num" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border-radius:999px;padding:5px;"><circle cx="12" cy="4" r="2"/><path d="M12 6v4M12 10H6v3M12 10h6v3M6 13v3M18 13v3"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+      <div><div class="label">ต้นไม้เส้นทาง</div><div class="sub">Path บน Tree ของทริปนี้</div></div>
+    </a>
+    <div class="sidebar-foot">ใช้โครงสร้าง Tree เดียวกับตอนเลือกสถานีในหน้าค้นหาเส้นทาง</div>
+  </aside>
+
+  <main>
+    <span class="eyebrow-tag violet">แผนผังโครงสร้าง</span>
+    <h1>ต้นไม้เส้นทางของทริปนี้</h1>
+    <p class="lede">สถานีทุกแห่งจัดเรียงเป็น Tree มีราก 4 ระดับ: ทุกระบบขนส่ง (Root) → ประเภท → สาย → สถานี (Leaf) หน้านี้แสดงว่าต้นทางและปลายทางที่เลือกไว้ อยู่ตรงไหนบน Tree นี้บ้าง</p>
+
+    <div class="stat-row">
+      <div class="stat"><div class="n" id="stat-leaves"></div><div class="l">สถานีทั้งหมด (Leaf)</div></div>
+      <div class="stat"><div class="n" id="stat-lines"></div><div class="l">สาย/เส้นทาง</div></div>
+      <div class="stat"><div class="n" id="stat-depth"></div><div class="l">ระดับความลึกสูงสุด</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>Root → ประเภท → สาย</h3>
+      <div class="graph-wrap" id="tree-svg-wrap"></div>
+    </div>
+
+    <div class="empty-hint" id="no-trip-hint" style="display:none;">
+      ยังไม่ได้เลือกต้นทาง-ปลายทาง — กรุณาเริ่มจาก<a href="index.html">หน้าค้นหาเส้นทาง</a>ก่อน แล้วกลับมาดู Path บน Tree ของทริปนี้ได้ที่นี่
+    </div>
+
+    <div id="trip-paths" style="display:none;">
+      <h3 style="margin:26px 0 4px;">Path จาก Root ถึงสถานีของทริป: <span id="trip-label" style="color:var(--primary);"></span></h3>
+      <p style="color:var(--muted); font-size:.88rem; margin-top:0;">นี่คือเส้นทางเดียวกับที่ใช้ตอนเลือกสถานีในหน้าค้นหาเส้นทาง และที่แสดงเป็นขั้นตอนในหน้ารายละเอียดการเดินทาง</p>
+
+      <div class="grid-2">
+        <div class="panel" id="origin-path-card">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <span class="dot origin"></span>
+            <h3 style="margin:0;">ต้นทาง</h3>
+            <span style="margin-left:auto; display:flex; align-items:center; gap:6px; font-size:.78rem; color:var(--muted);">
+              <span class="pc-line-dot" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
+              <span class="pc-line-name"></span>
+            </span>
+          </div>
+          <div class="path-trail"></div>
+        </div>
+        <div class="panel" id="dest-path-card">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <span class="dot dest"></span>
+            <h3 style="margin:0;">ปลายทาง</h3>
+            <span style="margin-left:auto; display:flex; align-items:center; gap:6px; font-size:.78rem; color:var(--muted);">
+              <span class="pc-line-dot" style="width:8px;height:8px;border-radius:50%;display:inline-block;"></span>
+              <span class="pc-line-name"></span>
+            </span>
+          </div>
+          <div class="path-trail"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/tree-view.js"></script>
+</body>
+</html>
